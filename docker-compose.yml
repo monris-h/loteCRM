@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: lotescrm-db
+    environment:
+      POSTGRES_USER: lotes
+      POSTGRES_PASSWORD: lotes
+      POSTGRES_DB: lotescrm
+    ports:
+      - "5433:5432"
+    volumes:
+      # Postgres 18+ guarda los datos en /var/lib/postgresql/<versión>/docker
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lotes -d lotescrm"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
